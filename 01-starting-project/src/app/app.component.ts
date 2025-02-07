@@ -12,7 +12,7 @@ import { TasksComponent } from './tasks/tasks.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  selectedUserId = 'u1';
+  selectedUserId?: string;
   users = DUMMY_USERS;
 
   get selectedUser() {
