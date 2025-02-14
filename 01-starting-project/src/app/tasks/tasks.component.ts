@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { NewTaskData } from './new-task/new-task.model';
+import { TasksService } from './tasks.service';
 @Component({
   selector: 'app-tasks',
   standalone: true,
@@ -13,57 +14,22 @@ export class TasksComponent {
   @Input({ required: true }) userId!: string;
   @Input({ required: true }) name!: string;
   isAddingTask = false;
-  tasks = [
-    {
-      id: 't1',
-      userId: 'u1',
-      title: 'master Angular',
-      summary:
-        'Learn all the basic and advanced feature of Angular and how to apply them.',
-      dueDate: '2025-12-31',
-    },
-    {
-      id: 't2',
-      userId: 'u3',
-      title: 'Build first prototype',
-      summary: 'Build a first prototype of the online shop website',
-      dueDate: '2025-5-31',
-    },
-    {
-      id: 't3',
-      userId: 'u3',
-      title: 'Prepare issue template',
-      summary:
-        'Prepare and describe an issue template which will help with project management',
-      dueDate: '2025-06-15',
-    },
-  ];
+
+  constructor(private tasksService: TasksService) {}
 
   get selectedUserTask() {
-    return this.tasks.filter((task) => task.userId === this.userId);
+    return this.tasksService.getUserTasks(this.userId);
   }
 
   onCompleteTask(id: string) {
-    // we want to return true, so if the id of the task is not what we're looking for, return false. If it is true, remove the task
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    return this.tasksService.removeTask;
   }
 
   onStartAddTask() {
     this.isAddingTask = true;
   }
 
-  onCancelAddTask() {
-    this.isAddingTask = false;
-  }
-
-  onAddTask(taskData: NewTaskData) {
-    this.tasks.push({
-      id: new Date().getDate().toString(),
-      userId: this.userId,
-      title: taskData.title,
-      summary: taskData.summary,
-      dueDate: taskData.date,
-    });
+  onCloseAddTask() {
     this.isAddingTask = false;
   }
 }
